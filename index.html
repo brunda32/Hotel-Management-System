@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Hotel Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">🏨 Grand Hotel</div>
+
+        <ul class="menu">
+            <li class="active" onclick="showSection('dashboard', this)">📊 Dashboard</li>
+            <li onclick="showSection('rooms', this)">🛏️ Rooms</li>
+            <li onclick="showSection('bookings', this)">📅 Bookings</li>
+            <li onclick="showSection('guests', this)">👥 Guests</li>
+            <li onclick="showSection('settings', this)">⚙️ Settings</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+            <div>
+                <h1>Hotel Management System</h1>
+                <p>Welcome back, Administrator!</p>
+            </div>
+            <div class="profile">👤 Admin</div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="section">
+
+            <div class="cards">
+
+                <div class="card blue">
+                    <div>
+                        <h3>Total Rooms</h3>
+                        <h2 id="totalRooms">6</h2>
+                    </div>
+                    <span>🛏️</span>
+                </div>
+
+                <div class="card green">
+                    <div>
+                        <h3>Available Rooms</h3>
+                        <h2 id="availableRooms">3</h2>
+                    </div>
+                    <span>✅</span>
+                </div>
+
+                <div class="card orange">
+                    <div>
+                        <h3>Occupied Rooms</h3>
+                        <h2 id="occupiedRooms">2</h2>
+                    </div>
+                    <span>🔑</span>
+                </div>
+
+                <div class="card red">
+                    <div>
+                        <h3>Total Bookings</h3>
+                        <h2 id="bookingCount">3</h2>
+                    </div>
+                    <span>📅</span>
+                </div>
+
+            </div>
+
+            <!-- ROOM OVERVIEW -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Room Overview</h2>
+                    <button onclick="showSection('rooms')">View Rooms</button>
+                </div>
+
+                <div class="room-grid" id="dashboardRooms"></div>
+            </div>
+
+            <!-- REVENUE -->
+            <div class="panel">
+                <h2>Hotel Revenue</h2>
+                <div class="revenue-value" id="revenue">₹0</div>
+                <p class="success">Hotel booking overview</p>
+                <div class="chart">
+                    <div style="height:40%"></div>
+                    <div style="height:55%"></div>
+                    <div style="height:45%"></div>
+                    <div style="height:70%"></div>
+                    <div style="height:60%"></div>
+                    <div style="height:85%"></div>
+                    <div style="height:75%"></div>
+                </div>
+                <div class="chart-labels">
+                    <span>Mon</span><span>Tue</span><span>Wed</span>
+                    <span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                </div>
+            </div>
+
+            <!-- RECENT BOOKINGS -->
+            <div class="panel">
+                <div class="panel-header">
+                    <h2>Recent Bookings</h2>
+                    <button onclick="showSection('bookings')">View All</button>
+                </div>
+
+                <input type="text" id="searchInput"
+                    placeholder="Search guest name..."
+                    oninput="searchBookings()">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Guest</th>
+                                <th>Phone</th>
+                                <th>Room</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentBookingTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ROOMS -->
+        <section id="rooms" class="section hidden">
+
+            <div class="section-title">
+                <h2>Room Management</h2>
+                <button onclick="openRoomForm()">+ Add Room</button>
+            </div>
+
+            <div class="room-list" id="roomList"></div>
+
+        </section>
+
+        <!-- BOOKINGS -->
+        <section id="bookings" class="section hidden">
+
+            <div class="section-title">
+                <h2>Booking Management</h2>
+                <button onclick="openBookingForm()">+ New Booking</button>
+            </div>
+
+            <div class="panel">
+                <input type="text" id="bookingSearch"
+                    placeholder="Search booking by guest name..."
+                    oninput="searchAllBookings()">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Guest Name</th>
+                                <th>Phone</th>
+                                <th>Room</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- GUESTS -->
+        <section id="guests" class="section hidden">
+
+            <div class="section-title">
+                <h2>Guest Management</h2>
+            </div>
+
+            <div class="panel">
+                <input type="text" id="guestSearch"
+                    placeholder="Search guest..."
+                    oninput="searchGuests()">
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Room</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guestTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="settings" class="section hidden">
+
+            <div class="panel">
+                <h2>Hotel Settings</h2>
+
+                <label>Hotel Name</label>
+                <input type="text" id="hotelName" value="Grand Hotel">
+
+                <label>Admin Email</label>
+                <input type="email" id="adminEmail"
+                    value="admin@grandhotel.com">
+
+                <label>Hotel Phone</label>
+                <input type="tel" id="hotelPhone"
+                    maxlength="10" pattern="[0-9]{10}">
+
+                <button onclick="saveSettings()">Save Settings</button>
+                <p id="settingsMessage" class="message"></p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- BOOKING MODAL -->
+    <div id="bookingModal" class="modal">
+
+        <div class="modal-content">
+
+            <span class="close" onclick="closeBookingForm()">&times;</span>
+
+            <h2>New Booking</h2>
+
+            <form id="bookingForm" onsubmit="addBooking(event)">
+
+                <label>Guest Name</label>
+                <input type="text" id="guestName"
+                    placeholder="Enter guest name"
+                    pattern="[A-Za-z ]+"
+                    title="Please enter letters and spaces only"
+                    required>
+
+                <label>Email Address</label>
+                <input type="email" id="guestEmail"
+                    placeholder="Enter email address" required>
+
+                <label>Phone Number</label>
+                <input type="tel" id="guestPhone"
+                    placeholder="Enter 10 digit phone number"
+                    maxlength="10"
+                    pattern="[0-9]{10}"
+                    title="Enter exactly 10 digits"
+                    required>
+
+                <label>Room Number</label>
+                <select id="roomNumber" required>
+                    <option value="">Select Room</option>
+                </select>
+
+                <label>Check-in Date</label>
+                <input type="date" id="checkIn" required>
+
+                <label>Check-out Date</label>
+                <input type="date" id="checkOut" required>
+
+                <button type="submit">Create Booking</button>
+
+            </form>
+
+        </div>
+    </div>
+
+    <!-- ADD ROOM MODAL -->
+    <div id="roomModal" class="modal">
+
+        <div class="modal-content">
+            <span class="close" onclick="closeRoomForm()">&times;</span>
+            <h2>Add New Room</h2>
+
+            <form id="roomForm" onsubmit="addRoom(event)">
+
+                <label>Room Number</label>
+                <input type="text" id="newRoomNumber"
+                    inputmode="numeric"
+                    pattern="[0-9]+"
+                    title="Numbers only"
+                    required>
+
+                <label>Room Type</label>
+                <select id="newRoomType" required>
+                    <option value="">Select Type</option>
+                    <option>Standard Room</option>
+                    <option>Deluxe Room</option>
+                    <option>Suite</option>
+                </select>
+
+                <label>Price Per Night</label>
+                <input type="number" id="newRoomPrice"
+                    min="1" required>
+
+                <button type="submit">Add Room</button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION -->
+    <div id="notification" class="notification"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
